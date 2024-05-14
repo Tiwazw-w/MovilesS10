@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "243994666753",
+    "firebase_url": "https://misegundochapoteo-default-rtdb.firebaseio.com",
+    "project_id": "misegundochapoteo",
+    "storage_bucket": "misegundochapoteo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243994666753:android:8b2e29c3ee5b2a62421d00",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.MovilesS10"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8CFT1H6ZVSYm20_1udFNAqftrS-Ivh_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243994666753:android:e1914fec1bc84257421d00",
+        "android_client_info": {
+          "package_name": "com.defaultcompany.sfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8CFT1H6ZVSYm20_1udFNAqftrS-Ivh_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
