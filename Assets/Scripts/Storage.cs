@@ -6,14 +6,15 @@ using Firebase.Storage;
 
 public class Storage : MonoBehaviour
 {
-    [SerializeField] private Sprite spriteDummy;
     [SerializeField] private Texture2D texture;
 
     [SerializeField] private string path;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    [Header("Files")]
+    [SerializeField] private TextAsset file;
+
     private FirebaseStorage _storageReference;
-    private Sprite _newSprite;
 
     private void Start()
     {
@@ -30,10 +31,65 @@ public class Storage : MonoBehaviour
         StartCoroutine(DownloadPicture(path));
     }
 
+    public void UploadText()
+    {
+        StartCoroutine(UploadTextFile(file));
+    }
+
+    public void DownloadText()
+    {
+        StartCoroutine(DownloadTextFile(path));
+    }
+
+    private IEnumerator DownloadTextFile(string path)
+    {
+        var textReference = _storageReference.GetReference(path);
+
+        var downloadTask = textReference.GetBytesAsync(long.MaxValue);
+
+        yield return new WaitUntil(() => downloadTask.IsCompleted);
+
+        if (downloadTask.Exception != null)
+        {
+            Debug.LogError($"Failed to download because {downloadTask.Exception}");
+            yield break;
+        }
+
+        string savePath = string.Format("{0}/{1}.cs", Application.persistentDataPath, file.name);
+        Debug.Log(Application.persistentDataPath);
+        System.IO.File.WriteAllText(savePath, System.Text.Encoding.UTF8.GetString(downloadTask.Result));
+    }
+
+    private IEnumerator UploadTextFile(TextAsset file)
+    {
+        var fileReference = _storageReference.GetReference($"/files/{file.name}.cs");
+        var bytes = file.bytes;
+        var uploadTask = fileReference.PutBytesAsync(bytes);
+
+        yield return new WaitUntil(() => uploadTask.IsCompleted);
+
+        if (uploadTask.Exception != null)
+        {
+            Debug.LogError($"Failed to upload because {uploadTask.Exception}");
+            yield break;
+        }
+
+        var getUrlTask = fileReference.GetDownloadUrlAsync();
+        yield return new WaitUntil(() => getUrlTask.IsCompleted);
+
+        if (getUrlTask.Exception != null)
+        {
+            Debug.LogError($"Failed to get download url with {getUrlTask.Exception}");
+            yield break;
+        }
+
+        Debug.Log($"Download from {getUrlTask.Result}");
+    }
+
     private IEnumerator UploadPicture(Texture2D picture)
     {
         //https://learn.microsoft.com/en-us/dotnet/api/system.guid?view=net-8.0
-        var pictureReference = _storageReference.GetReference($"/pictures/{Guid.NewGuid()}.png");
+        var pictureReference = _storageReference.GetReference($"/pictures/{picture.name}.png");
         var bytes = picture.EncodeToPNG();
         var uploadTask = pictureReference.PutBytesAsync(bytes);
 
