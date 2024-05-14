@@ -12,25 +12,22 @@ public class Storage : MonoBehaviour
     [SerializeField] private string path;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
-    [SerializeField] private bool upload = false;
-
     private FirebaseStorage _storageReference;
     private Sprite _newSprite;
 
     private void Start()
     {
         _storageReference = FirebaseStorage.DefaultInstance;
+    }
 
-        if (upload)
-        {
-            StartCoroutine(UploadPicture(texture));
-        }
-        else
-        {
-            StartCoroutine(DownloadPicture(path));
-        }
+    public void UpdloadPicture()
+    {
+        StartCoroutine(UploadPicture(texture));
+    }
 
-        
+    public void DownloadPicture()
+    {
+        StartCoroutine(DownloadPicture(path));
     }
 
     private IEnumerator UploadPicture(Texture2D picture)

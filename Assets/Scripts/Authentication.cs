@@ -11,10 +11,6 @@ public class Authentication : MonoBehaviour
     [SerializeField] private string email;
     [SerializeField] private string password;
 
-    [Header("Bool Actions")]
-    [SerializeField] private bool signUp = false;
-    [SerializeField] private bool signIn = false;
-
     private FirebaseAuth _authReference;
 
     public UnityEvent OnLogInSuccesful = new UnityEvent();
@@ -24,29 +20,27 @@ public class Authentication : MonoBehaviour
         _authReference = FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance);
     }
 
-    private void Start()
+    public void SignUp()
     {
-        if (signUp)
-        {
-            Debug.Log("Start Register");
-            StartCoroutine(RegisterUser(email, password));
-        }
-
-        if (signIn)
-        {
-            Debug.Log("Start Login");
-            StartCoroutine(SignInWithEmail(email, password));
-        }
+        Debug.Log("Start Register");
+        StartCoroutine(RegisterUser(email, password));
     }
 
-    private void Update()
+    public void SignIn()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LogOut();
-        }
+        Debug.Log("Start Login");
+        StartCoroutine(SignInWithEmail(email, password));
     }
 
+    public void SignOut()
+    {
+        LogOut();
+    }
+
+    public void LoadNewScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene2");
+    }
 
     private IEnumerator RegisterUser(string email, string password)
     {
