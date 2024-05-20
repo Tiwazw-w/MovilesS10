@@ -7,6 +7,7 @@ using Firebase.Storage;
 public class Storage : MonoBehaviour
 {
     [SerializeField] private Texture2D texture;
+    [SerializeField] private AuSO User;
 
     [SerializeField] private string path;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -29,6 +30,10 @@ public class Storage : MonoBehaviour
     public void DownloadPicture()
     {
         StartCoroutine(DownloadPicture(path));
+    }
+    public void SetFileID(string Textid)
+    {
+        path = $"/{User._Name}/pictures/{Textid}";
     }
 
     public void UploadText()

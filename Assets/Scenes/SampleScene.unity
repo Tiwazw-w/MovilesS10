@@ -440,8 +440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 874f59bb0a25c2a42b0ce6fa2788890c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  email: dummy@gmail.com
-  password: 123CorreoDummy#
+  email: omar.albarracin@tecsup.edu.pe
+  password: Cositos12
   OnLogInSuccesful:
     m_PersistentCalls:
       m_Calls:

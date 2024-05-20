@@ -5,30 +5,39 @@ using Firebase.Auth;
 using Firebase;
 using System.Threading.Tasks;
 using UnityEngine.Events;
+using TMPro;
 
 public class Authentication : MonoBehaviour
 {
     [SerializeField] private string email;
     [SerializeField] private string password;
+    private AuSO _User;
 
     private FirebaseAuth _authReference;
 
-    public UnityEvent OnLogInSuccesful = new UnityEvent();
+    public UnityEvent OnLogInSuccesful = new();
+    public UnityEvent OnLogOutSuccesful = new();
+    public UnityEvent OnRegisterSuccesful = new();
 
     private void Awake()
     {
         _authReference = FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance);
     }
-
+    public void SetEmail(string user)
+    {
+        email = user;
+    }
+    public void SetPassword(string pass)
+    {
+        password = pass;
+    }
     public void SignUp()
     {
-        Debug.Log("Start Register");
         StartCoroutine(RegisterUser(email, password));
     }
 
     public void SignIn()
     {
-        Debug.Log("Start Login");
         StartCoroutine(SignInWithEmail(email, password));
     }
 
@@ -39,7 +48,7 @@ public class Authentication : MonoBehaviour
 
     public void LoadNewScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene2");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("StorageScene");
     }
 
     private IEnumerator RegisterUser(string email, string password)
@@ -48,12 +57,15 @@ public class Authentication : MonoBehaviour
         var registerTask = _authReference.CreateUserWithEmailAndPasswordAsync(email, password);
         yield return new WaitUntil(() => registerTask.IsCompleted);
 
-        if(registerTask.Exception != null)
+        if (registerTask.Exception != null)
         {
             Debug.LogWarning($"Failed to register task with {registerTask.Exception}");
         }
         else
         {
+            OnRegisterSuccesful?.Invoke();
+            email = "";
+            password = "";
             Debug.Log($"Succesfully registered user {registerTask.Result.User.Email}");
         }
     }
@@ -71,6 +83,8 @@ public class Authentication : MonoBehaviour
         }
         else
         {
+            _User._correoID = loginTask.Result.User.Email;
+            _User._Name = loginTask.Result.User.UserId;
             Debug.Log($"Login succeeded with {loginTask.Result.User.Email}");
             OnLogInSuccesful?.Invoke();
         }
@@ -79,5 +93,6 @@ public class Authentication : MonoBehaviour
     private void LogOut()
     {
         FirebaseAuth.DefaultInstance.SignOut();
+        OnLogOutSuccesful?.Invoke();
     }
 }
